@@ -1,8 +1,11 @@
-  # AutoTracker version 0.0
+# AutoTracker version 0.0
 # Author:  Bryan May
 # AutoTracker is used to monitor system and network logs for an application or an entire system
 
 import wmi
+
+menu_items = ['Please select an option', '1. Show all processes', '2. Show running processes', '3. Show OS version',
+              '4. List specific processes', '5. Show CPU Usage']
 
 
 def show_all_services():
@@ -65,15 +68,43 @@ def process_response():
     return response
 
 
+def show_menu():
+    for string in menu_items:
+        print(string)
+
+
+def is_valid_selection(selection: int) -> bool:
+    return selection in range(1, len(menu_items) + 1)
+
+
+def get_response() -> str:
+    while True:
+        try:
+            response = input('Please enter your selection')
+            while not is_valid_selection(response):
+                print('Please enter a valid response')
+                response = input('Please enter your selection')
+                return response
+        except:
+            print("that wasn't a valid selection...")
+
+
+def show_cpu_usage():
+    pass
+
+
+options = {1: show_all_services,
+           2: show_running_services,
+           3: show_os_version(),
+           4: list_specific_processes,
+           5: show_cpu_usage()
+           }
+
+
 def init():
-    response = 'Y'
-    while response == 'Y':
-        app = input("Please enter the application name you wish to query: \n")
-        app = fix_app_input(app)
-
-        destroy_process(app)
-
-        response = process_response()
+    show_menu()
+    response = get_response()
+    options[int(response)]()
 
 
 # run this shit dawg
