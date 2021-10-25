@@ -84,7 +84,7 @@ def get_response() -> str:
             while not is_valid_selection(response):
                 print('Please enter a valid response')
                 response = input('Please enter your selection')
-                return response
+            return response
         except:
             print("that wasn't a valid selection...")
 
